@@ -1,9 +1,64 @@
 ---
 name: drupal-composer — private repositories
-description: Configurer des repositories Composer privés pour Drupal - GitLab/GitHub privés, Satis, authentification COMPOSER_AUTH, et modules custom en packages.
+description: Configurer des repositories Composer privés pour Drupal - Satis agence interne (pattern dominant en France), GitLab/GitHub privés, authentification COMPOSER_AUTH, et modules custom en packages.
 ---
 
 # Repositories Privés Composer — Référence Complète
+
+## Pattern Agence Française — Satis Interne
+
+La majorité des agences Drupal françaises hébergent un Satis interne pour distribuer leurs modules et thèmes custom à tous leurs projets.
+
+```
+Architecture type agence FR :
+  ├── satis.mon-agence.fr      → Repository Composer statique (Satis)
+  │   ├── drupal/accesstools    → Module accessibilité interne
+  │   ├── drupal/mon-theme      → Thème Bootstrap 5 interne
+  │   └── drupal/mon-plugin     → Plugin custom récurrent
+  └── Tous les projets pointent vers ce Satis
+```
+
+```json
+// composer.json de CHAQUE projet — déclarer le Satis agence EN PREMIER
+{
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://satis.mon-agence.fr"
+    },
+    {
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
+    }
+  ]
+}
+```
+
+```json
+// auth.json (ne PAS committer — dans .gitignore)
+{
+  "http-basic": {
+    "satis.mon-agence.fr": {
+      "username": "deploy",
+      "password": "TOKEN_SATIS_SECRET"
+    }
+  }
+}
+```
+
+```bash
+# Variable CI/CD (GitLab Settings → CI/CD → Variables)
+# COMPOSER_AUTH = valeur JSON ci-dessous
+COMPOSER_AUTH='{"http-basic":{"satis.mon-agence.fr":{"username":"deploy","password":"TOKEN"}}}'
+
+# Vérifier que le Satis répond et liste les packages
+composer search --repository-url=https://satis.mon-agence.fr mon-agence/
+
+# Voir les packages disponibles dans le Satis
+curl -s https://satis.mon-agence.fr/packages.json | jq '.packages | keys'
+```
+
+---
 
 ## Repository Git Privé (GitLab / GitHub)
 
