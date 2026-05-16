@@ -77,5 +77,5 @@ Référentiel complet de la gestion des dépendances Drupal avec Composer 2 : st
 - `drupal-docker` — Cache Composer dans Docker, Composer dans les containers
 - `drupal-migration` — Composer lors des upgrades de version majeure
 - `drupal-security` — `composer audit`, vulnérabilités PHP
-- `drupal-tooling` — DDEV + Composer, drush via Composer
+- `drupal-deployment` — déploiement production, `composer install --no-dev` en CI/CD
 - `drupal-testing` — Composer pour les dépendances de test (PHPUnit, PHPStan)
