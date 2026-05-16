@@ -12,7 +12,7 @@ La majorité des agences Drupal françaises hébergent un Satis interne pour dis
 ```
 Architecture type agence FR :
   ├── satis.mon-agence.fr      → Repository Composer statique (Satis)
-  │   ├── drupal/accesstools    → Module accessibilité interne
+  │   ├── drupal/mon-module-a11y → Module accessibilité interne
   │   ├── drupal/mon-theme      → Thème Bootstrap 5 interne
   │   └── drupal/mon-plugin     → Plugin custom récurrent
   └── Tous les projets pointent vers ce Satis
